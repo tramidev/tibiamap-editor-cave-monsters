@@ -30,7 +30,7 @@ jQuery(document).ready(function($) {
 	    ]);
 	    map.addLayer(layerBounds);
 
-	    for(i=0; i < floors.length; ++i){
+	    for(i=0; i < 16; ++i){
 	        floors[i] = 
 	        L.tileLayer('img/mapfloor-'+i+'/{z}/{x}/{y}.png', {
 	                noWrap: true
