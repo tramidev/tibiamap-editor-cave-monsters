@@ -45,7 +45,10 @@ L.RasterCoords.prototype = {
 	 * @return {L.LatLng} - image coordinates
 	 */
 	project: function(coords) {
-		return this.map.project(coords, this.zoom);
+		var projected = this.map.project(coords, this.zoom);
+		projected["x"] = Math.floor(projected["x"]),
+		projected["y"] = Math.floor(projected["y"]);
+		return projected;
 	},
 	/*
 	 * sets the max bounds on map

@@ -1,11 +1,40 @@
-/** Thanks to commenthol/gdal2tiles-leaflet **/
+/** 
+Thanks to commenthol/gdal2tiles-leaflet
+
+URLToArray compliments of casablanca @ http://stackoverflow.com/a/4297832/340843 
+**/
+
+function URLToArray(url) {
+    var request = {};
+    var pairs = url.substring(url.indexOf('?') + 1).split('&');
+    for (var i = 0; i < pairs.length; i++) {
+        if(!pairs[i])
+            continue;
+        var pair = pairs[i].split('=');
+        request[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+     }
+     return request;
+}
+
+function ArrayToURL(array) {
+  var pairs = [];
+  for (var key in array)
+    if (array.hasOwnProperty(key))
+
+      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(array[key]));
+  return pairs.join('&');
+}
 
 jQuery(document).ready(function($) {
 
 	var floors = new Array(15);
+	var active = 7;
 
 	$("#floor").on("change", function(){
-	    floors[$(this).val()].bringToFront();
+		map.removeLayer(floors[active]);
+		map.addLayer(floors[$(this).val()]);
+		floors[$(this).val()].bringToFront();
+		active = $(this).val();	 
 	});
 		
 	    var minZoom = 3,
@@ -19,6 +48,8 @@ jQuery(document).ready(function($) {
 	        minZoom: minZoom,
 	        maxZoom: maxZoom
 	    });
+
+
 
 	    rc = new L.RasterCoords(map, img);
 	    rc.setMaxBounds();
@@ -35,8 +66,8 @@ jQuery(document).ready(function($) {
 	        L.tileLayer('img/mapfloor-'+i+'/{z}/{x}/{y}.png', {
 	                noWrap: true
 	            });
-	        map.addLayer(floors[i]);
+	        
 	    }
 
-	floors[7].bringToFront();
+	map.addLayer(floors[7]);
 });
